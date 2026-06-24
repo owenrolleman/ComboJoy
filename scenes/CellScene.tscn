@@ -10,6 +10,7 @@ size = Vector2(32, 32)
 script = ExtResource("1_g8t06")
 valid_target_color = Color(0.898039, 0.760784, 0, 0.984314)
 hovering_color = Color(0.592157, 0.941176, 1, 0.831373)
+selected_color = Color(0.913725, 0.129412, 0.741176, 0.831373)
 
 [node name="Area2D" type="Area2D" parent="."]
 

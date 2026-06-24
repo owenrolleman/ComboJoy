@@ -6,20 +6,20 @@ extends Node2D
 @onready var resource_panel = $UI/ResourcePanel
 @onready var assignment_panel = $UI/AssignmentPanel
 @onready var assignment_manager = $Systems/AssignmentManager
-@onready var bandwidth_panel = $UI/BandwidthPanel
+@onready var player_state_panel = $UI/PlayerStatePanel
 
 func _ready():
-	bandwidth_panel.selection_manager = selection_manager
-	bandwidth_panel.update_display()
+	player_state_panel.update_display(selection_manager.max_bandwidth)
 	
 	# Setup selection manager connections
 	selection_manager.board = board
-	selection_manager.resource_manager = resource_manager
-	selection_manager.bandwidth_changed.connect(bandwidth_panel.update_display)
-	
+	selection_manager.bandwidth_changed.connect(player_state_panel.update_display)
+	selection_manager.resources_collected.connect(resource_manager.add_resources)
+	selection_manager.output_updated.connect(assignment_manager.add_output)
 	# Assignment Manager + Panel link
 	assignment_panel.assignment_manager = assignment_manager
-	assignment_panel.update_display()
+	assignment_manager.gained_output.connect(assignment_panel.update_progress)
+	assignment_panel.update_display_info()
 	
 	# Link resource panel to manager
 	resource_panel.resource_manager = resource_manager

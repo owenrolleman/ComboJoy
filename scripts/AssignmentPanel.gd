@@ -2,12 +2,14 @@ class_name AssignmentPanel
 extends Control
 
 @onready var assignment_name_label = $VBoxContainer/AssignmentName
+@onready var progress_label = $VBoxContainer/ProgressLabel
+@onready var progress_bar = $VBoxContainer/ProgressBar
 @onready var quota_label = $VBoxContainer/QuotaLabel
 @onready var modifier_label = $VBoxContainer/ModifierLabel
 
 var assignment_manager: AssignmentManager
 
-func update_display():
+func update_display_info():
 	if assignment_manager == null:
 		return
 	
@@ -18,13 +20,19 @@ func update_display():
 	
 	# Build Labels
 	assignment_name_label.text = assignment.name
-	quota_label.text = "Quota: " + str(assignment.quota)
+	update_progress(assignment_manager.current_progress, assignment_manager.get_quota())
 	var modifier_text: String = ""
 	
 	for modifier in assignment.modifiers:
 		modifier_text += "- " + modifier.name + "\n"
 	
 	modifier_label.text = modifier_text
+	
+
+func update_progress(progress: int, quota: int):
+	progress_label.text = ("Progress %d / %d" % [progress, quota])
+	progress_bar.max_value = quota
+	progress_bar.value = progress
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

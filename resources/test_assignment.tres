@@ -8,5 +8,5 @@
 [resource]
 script = ExtResource("1_fannb")
 name = "Test Assignment"
-quota = 50
+quota = 20
 modifiers = Array[Resource("res://scripts/RuleModifier.gd")]([ExtResource("1_fr3n6"), ExtResource("2_hed0i"), ExtResource("3_8c5ba")])

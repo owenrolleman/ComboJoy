@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c26pihniqyxte"]
 
-[ext_resource type="Script" path="res://scenes/AssignmentPanel.gd" id="1_60sof"]
+[ext_resource type="Script" path="res://scripts/AssignmentPanel.gd" id="1_60sof"]
 
 [node name="AssignmentPanel" type="Control"]
 layout_mode = 3
@@ -20,7 +20,14 @@ offset_bottom = 40.0
 [node name="AssignmentName" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 
+[node name="ProgressLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer"]
+layout_mode = 2
+
 [node name="QuotaLabel" type="Label" parent="VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="ModifierLabel" type="Label" parent="VBoxContainer"]

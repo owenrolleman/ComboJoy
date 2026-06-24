@@ -8,6 +8,9 @@ signal cell_clicked(cell)
 @export var cell_size: int = 48
 @export var valid_target_color: Color = Color(Color.ORANGE, .6)
 @export var hovering_color: Color = Color(Color.CYAN, .6)
+@export var selected_color: Color = Color(Color.WHITE, .6)
+@export var targetted_scale: Vector2 = Vector2(1.4, 1.4)
+@export var default_scale: Vector2 = Vector2(1.2, 1.2)
 @onready var highlight_sprite: Sprite2D = $HighlightSprite
 
 var grid_position: Vector2i
@@ -34,12 +37,15 @@ func _on_area_2d_mouse_exited():
 
 # VISUAL CONTROL
 func update_visuals():
-	highlight_sprite.visible = is_valid_target
-	if is_hovered:
-		highlight_sprite.scale = Vector2(1.4, 1.4)
+	highlight_sprite.visible = is_valid_target or is_selected
+	if is_selected:
+		highlight_sprite.scale = targetted_scale
+		highlight_sprite.modulate = selected_color
+	elif is_hovered:
+		highlight_sprite.scale = targetted_scale
 		highlight_sprite.modulate = hovering_color
 	else:
-		highlight_sprite.scale = Vector2(1.2, 1.2)
+		highlight_sprite.scale = default_scale
 		highlight_sprite.modulate = valid_target_color
 
 # HELPERS
@@ -62,6 +68,9 @@ func clear_tile():
 func has_tile():
 	return tile != null
 
+func get_cost() -> int:
+	return tile.cost
+	
 func set_selected(value: bool):
 	is_selected = value
 	if tile: tile.set_selected(value)

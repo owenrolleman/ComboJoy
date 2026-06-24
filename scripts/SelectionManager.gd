@@ -2,12 +2,15 @@ class_name SelectionManager
 extends Node2D
 
 signal bandwidth_changed
+signal bandwidth_depleted
+signal resources_collected
+signal output_updated
 
 var board: Board
-var resource_manager: ResourceManager
 
 var current_path: Array[CellNode] = []
 @export var bandwidth: int = 8
+@export var max_bandwidth: int = 8
 
 func has_active_path():
 	return current_path.size() > 0
@@ -27,7 +30,7 @@ func on_cell_unhovered(cell):
 # Adds 'value' to bandwidth, emits to UI
 func update_bandwidth(value: int):
 	bandwidth += value
-	bandwidth_changed.emit()
+	bandwidth_changed.emit(bandwidth)
 
 func backtrack_to_cell(cell):
 	var index = current_path.find(cell)
@@ -49,7 +52,9 @@ func is_adjacent(cell_a, cell_b) -> bool:
 	return dx + dy == 1
 
 func add_cell(cell):
-	if bandwidth <= 0:
+	# Checks if the player can afford to select a tile that costs 1 BW to select
+	# TODO: Implement different BW costs on tiles (heavy modifier)
+	if !can_afford(1):
 		print("No more bandwidth")
 		return
 		
@@ -79,7 +84,7 @@ func update_valid_targets():
 	var neighbors = board.get_neighbors(last_cell)
 	
 	for neighbor in neighbors:
-		if neighbor not in current_path:
+		if neighbor not in current_path and can_afford(neighbor.get_cost()):
 			neighbor.set_valid_target(true)
 
 func _input(event):
@@ -132,10 +137,24 @@ func execute_path():
 	
 	print("Executing path...")
 	var counts = score_path()
-
-	resource_manager.add_resources(counts)
+	resources_collected.emit(counts)
+	var output = calculate_output(counts)
+	output_updated.emit(output)
 	board.clear_tiles(current_path)
 	board.apply_gravity_down()
 	clear_path()
 	board.refill_board()
 	print(counts)
+
+func is_out_of_bandwidth():
+	return bandwidth <= 0
+
+func can_afford(cost: int):
+	return bandwidth >= cost
+
+func calculate_output(counts: Dictionary) -> int:
+	var output: int = 0
+	for color in counts:
+		output += counts[color]
+	
+	return output
