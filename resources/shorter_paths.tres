@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="RuleModifier" load_steps=2 format=3 uid="uid://m4ut45sdmvto"]
+
+[ext_resource type="Script" path="res://scripts/RuleModifier.gd" id="1_vpqv6"]
+
+[resource]
+script = ExtResource("1_vpqv6")
+name = "Shorter Paths"
+description = "Max path length may not exceed 4 tiles."

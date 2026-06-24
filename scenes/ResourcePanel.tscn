@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://3g3oy14xss4y"]
+
+[ext_resource type="Script" path="res://scenes/ResourcePanel.gd" id="1_s0wvt"]
+
+[node name="ResourcePanel" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_s0wvt")
+
+[node name="RedLabel" type="Label" parent="."]
+layout_mode = 2
+
+[node name="BlueLabel" type="Label" parent="."]
+layout_mode = 2
+
+[node name="GreenLabel" type="Label" parent="."]
+layout_mode = 2
+
+[node name="YellowLabel" type="Label" parent="."]
+layout_mode = 2
+
+[node name="PurpleLabel" type="Label" parent="."]
+layout_mode = 2
+
+[node name="OutputLabel" type="Label" parent="."]
+layout_mode = 2

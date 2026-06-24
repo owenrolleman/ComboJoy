@@ -1,0 +1,37 @@
+[gd_scene load_steps=10 format=3 uid="uid://b12vql2qtudc6"]
+
+[ext_resource type="PackedScene" uid="uid://dts1r3066pmd1" path="res://scenes/Board.tscn" id="1_b0o4e"]
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_d05vg"]
+[ext_resource type="Script" path="res://scripts/SelectionManager.gd" id="3_mdnat"]
+[ext_resource type="Script" path="res://scripts/ResourceManager.gd" id="5_csnx6"]
+[ext_resource type="PackedScene" uid="uid://c26pihniqyxte" path="res://scenes/AssignmentPanel.tscn" id="5_i6iag"]
+[ext_resource type="PackedScene" uid="uid://c1utypvu485y" path="res://scenes/BandwidthPanel.tscn" id="5_i6lb7"]
+[ext_resource type="Script" path="res://scripts/AssignmentManager.gd" id="6_aukqu"]
+[ext_resource type="Resource" uid="uid://cjujesjk1441o" path="res://resources/test_assignment.tres" id="7_l8dn3"]
+[ext_resource type="PackedScene" uid="uid://3g3oy14xss4y" path="res://scenes/ResourcePanel.tscn" id="8_a5ypu"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_d05vg")
+
+[node name="Board" parent="." node_paths=PackedStringArray("selection_manager") instance=ExtResource("1_b0o4e")]
+selection_manager = NodePath("../Systems/SelectionManager")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ResourcePanel" parent="UI" instance=ExtResource("8_a5ypu")]
+
+[node name="AssignmentPanel" parent="UI" instance=ExtResource("5_i6iag")]
+
+[node name="BandwidthPanel" parent="UI" instance=ExtResource("5_i6lb7")]
+
+[node name="Systems" type="Node2D" parent="."]
+
+[node name="SelectionManager" type="Node2D" parent="Systems"]
+script = ExtResource("3_mdnat")
+
+[node name="ResourceManager" type="Node2D" parent="Systems"]
+script = ExtResource("5_csnx6")
+
+[node name="AssignmentManager" type="Node2D" parent="Systems"]
+script = ExtResource("6_aukqu")
+current_assignment = ExtResource("7_l8dn3")
