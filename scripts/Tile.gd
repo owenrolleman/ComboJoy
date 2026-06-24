@@ -14,6 +14,7 @@ var is_hovered: bool = false
 var is_selected: bool = false
 
 var cost: int = 1
+var value: int  = 1
 
 func setup(type: TileType):
 	tile_type = type

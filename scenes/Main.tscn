@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b12vql2qtudc6"]
+[gd_scene load_steps=11 format=3 uid="uid://b12vql2qtudc6"]
 
 [ext_resource type="PackedScene" uid="uid://dts1r3066pmd1" path="res://scenes/Board.tscn" id="1_b0o4e"]
 [ext_resource type="Script" path="res://scripts/Main.gd" id="1_d05vg"]
@@ -9,13 +9,13 @@
 [ext_resource type="Script" path="res://scripts/AssignmentManager.gd" id="6_aukqu"]
 [ext_resource type="Resource" uid="uid://cjujesjk1441o" path="res://resources/test_assignment.tres" id="7_l8dn3"]
 [ext_resource type="PackedScene" uid="uid://3g3oy14xss4y" path="res://scenes/ResourcePanel.tscn" id="8_a5ypu"]
+[ext_resource type="Script" path="res://scripts/PlayerStateManager.gd" id="10_1qunj"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_d05vg")
 
-[node name="Board" parent="." node_paths=PackedStringArray("selection_manager") instance=ExtResource("1_b0o4e")]
+[node name="Board" parent="." instance=ExtResource("1_b0o4e")]
 position = Vector2(450, 200)
-selection_manager = NodePath("../Systems/SelectionManager")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -36,3 +36,6 @@ script = ExtResource("5_csnx6")
 [node name="AssignmentManager" type="Node2D" parent="Systems"]
 script = ExtResource("6_aukqu")
 current_assignment = ExtResource("7_l8dn3")
+
+[node name="PlayerStateManager" type="Node" parent="Systems"]
+script = ExtResource("10_1qunj")

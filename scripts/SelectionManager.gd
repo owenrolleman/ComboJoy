@@ -1,16 +1,14 @@
 class_name SelectionManager
 extends Node2D
 
-signal bandwidth_changed
-signal bandwidth_depleted
+signal bandwidth_change_requested
 signal resources_collected
 signal output_updated
 
 var board: Board
+var player_state_manager: PlayerStateManager
 
 var current_path: Array[CellNode] = []
-@export var bandwidth: int = 8
-@export var max_bandwidth: int = 8
 
 func has_active_path():
 	return current_path.size() > 0
@@ -27,10 +25,6 @@ func on_cell_hovered(cell):
 func on_cell_unhovered(cell):
 	cell.set_hovered(false)
 
-# Adds 'value' to bandwidth, emits to UI
-func update_bandwidth(value: int):
-	bandwidth += value
-	bandwidth_changed.emit(bandwidth)
 
 func backtrack_to_cell(cell):
 	var index = current_path.find(cell)
@@ -38,9 +32,7 @@ func backtrack_to_cell(cell):
 	while current_path.size() > index:
 		var removed_cell = current_path.pop_back()
 		removed_cell.set_selected(false)
-		count += 1
-		
-	update_bandwidth(count)
+		bandwidth_change_requested.emit(removed_cell.tile.cost)
 	
 	update_valid_targets()
 
@@ -58,9 +50,10 @@ func add_cell(cell):
 		print("No more bandwidth")
 		return
 		
-	update_bandwidth(-1)
 	current_path.append(cell)
 	cell.set_selected(true)
+	bandwidth_change_requested.emit(cell.tile.cost * -1) # Invert so cost is subtracted from current BW
+	
 	print("Added cell: ", cell.grid_position)
 	update_valid_targets()
 
@@ -147,10 +140,10 @@ func execute_path():
 	print(counts)
 
 func is_out_of_bandwidth():
-	return bandwidth <= 0
+	return player_state_manager.can_afford_tile(1)
 
 func can_afford(cost: int):
-	return bandwidth >= cost
+	return player_state_manager.can_afford_tile(cost)
 
 func calculate_output(counts: Dictionary) -> int:
 	var output: int = 0
