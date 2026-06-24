@@ -6,7 +6,8 @@ const HEIGHT: int = 8
 const TILE_SIZE: int = 48
 const NUM_TILE_TYPES: int = 5
 
-@export var selection_manager: SelectionManager
+signal cell_created
+
 @export var tile_scene: PackedScene
 @export var cell_scene: PackedScene
 
@@ -19,9 +20,6 @@ enum GravityDirection {
 
 var gravity_direction := GravityDirection.DOWN
 var grid := []
-
-func _ready():
-	create_board()
 
 # Needs to be improved to allow different shaped board setups
 func create_board():
@@ -36,15 +34,13 @@ func create_board():
 			cell.grid_position = Vector2i(x, y)
 			cell.position = grid_to_world(cell.grid_position)
 			
-			cell.cell_hovered.connect(selection_manager.on_cell_hovered)
-			cell.cell_clicked.connect(selection_manager.on_cell_clicked)
-			cell.cell_unhovered.connect(selection_manager.on_cell_unhovered)
-			
 			var tile = create_random_tile()
 			cell.set_tile(tile)
 			
 			$CellContainer.add_child(cell)
 			grid[x].append(cell)
+			
+			cell_created.emit(cell)
 
 
 func create_random_tile() -> Tile:
