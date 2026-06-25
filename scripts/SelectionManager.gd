@@ -25,7 +25,6 @@ func on_cell_hovered(cell):
 func on_cell_unhovered(cell):
 	cell.set_hovered(false)
 
-
 func backtrack_to_cell(cell):
 	var index = current_path.find(cell)
 	var count: int = 0
