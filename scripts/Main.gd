@@ -1,7 +1,9 @@
 extends Node2D
 
 @onready var board = $Board
+@onready var motherboard = $Motherboard
 @onready var selection_manager = $Systems/SelectionManager
+@onready var execution_manager = $Systems/ExecutionManager
 @onready var resource_manager = $Systems/ResourceManager
 @onready var resource_panel = $UI/ResourcePanel
 @onready var assignment_panel = $UI/AssignmentPanel
@@ -18,9 +20,16 @@ func _ready():
 	# Setup selection manager connections
 	selection_manager.board = board
 	selection_manager.player_state_manager = player_state_manager
+	
 	selection_manager.resources_collected.connect(resource_manager.add_resources)
 	selection_manager.output_updated.connect(assignment_manager.add_output)
 	selection_manager.bandwidth_change_requested.connect(player_state_manager.update_bandwidth)
+	selection_manager.execution_requested.connect(execution_manager.execute)
+	
+	execution_manager.board = board
+	execution_manager.motherboard = motherboard
+	execution_manager.assignment_manager = assignment_manager
+	execution_manager.resource_manager = resource_manager
 	
 	# Setup player state manager and panel
 	player_state_panel.player_state_manager = player_state_manager

@@ -137,3 +137,14 @@ func refill_board():
 			if cell.has_tile():
 				continue
 			cell.set_tile(create_random_tile())
+
+func create_packets(cells: Array[CellNode]) -> Array[Packet]:
+	var packets: Array[Packet] = []
+	
+	for cell in cells:
+		if !cell.has_tile():
+			continue
+		
+		packets.append(Packet.new(cell.tile))
+	
+	return packets

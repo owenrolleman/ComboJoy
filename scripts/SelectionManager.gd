@@ -5,6 +5,8 @@ signal bandwidth_change_requested
 signal resources_collected
 signal output_updated
 
+signal execution_requested(cells: Array[CellNode])
+
 var board: Board
 var player_state_manager: PlayerStateManager
 
@@ -81,7 +83,8 @@ func update_valid_targets():
 
 func _input(event):
 	if event.is_action_pressed("execute"):
-		execute_path()
+		execution_requested.emit(current_path)
+		clear_path()
 		
 
 # Attempts to add cell to selected path
@@ -103,50 +106,9 @@ func handle_selection(cell) -> bool:
 	add_cell(cell)
 	return true
 
-func score_path() -> Dictionary:
-	var counts = {
-		Tile.TileType.RED: 0,
-		Tile.TileType.BLUE: 0,
-		Tile.TileType.YELLOW: 0,
-		Tile.TileType.GREEN: 0,
-		Tile.TileType.PURPLE: 0
-	}
-	for cell in current_path:
-		
-		if !cell.has_tile():
-			continue
-		
-		counts[cell.tile.tile_type] += 1
-	return counts
-
-func execute_path():
-
-	# Count colors
-	# Apply effects
-	# Destroy tiles
-	if current_path.is_empty():
-		return
-	
-	print("Executing path...")
-	var counts = score_path()
-	resources_collected.emit(counts)
-	var output = calculate_output(counts)
-	output_updated.emit(output)
-	board.clear_tiles(current_path)
-	board.apply_gravity_down()
-	clear_path()
-	board.refill_board()
-	print(counts)
-
 func is_out_of_bandwidth():
 	return player_state_manager.can_afford_tile(1)
 
 func can_afford(cost: int):
 	return player_state_manager.can_afford_tile(cost)
 
-func calculate_output(counts: Dictionary) -> int:
-	var output: int = 0
-	for color in counts:
-		output += counts[color]
-	
-	return output
