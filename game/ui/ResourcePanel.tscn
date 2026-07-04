@@ -1,11 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://3g3oy14xss4y"]
 
-[ext_resource type="Script" path="res://scripts/ResourcePanel.gd" id="1_7g4t6"]
+[ext_resource type="Script" path="res://game/ui/ResourcePanel.gd" id="1_b0hq7"]
 
 [node name="ResourcePanel" type="VBoxContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("1_7g4t6")
+script = ExtResource("1_b0hq7")
 
 [node name="RedLabel" type="Label" parent="."]
 layout_mode = 2

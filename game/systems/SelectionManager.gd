@@ -2,9 +2,6 @@ class_name SelectionManager
 extends Node2D
 
 signal bandwidth_change_requested
-signal resources_collected
-signal output_updated
-
 signal execution_requested(cells: Array[CellNode])
 
 var board: Board
@@ -84,7 +81,6 @@ func update_valid_targets():
 func _input(event):
 	if event.is_action_pressed("execute"):
 		execution_requested.emit(current_path)
-		clear_path()
 		
 
 # Attempts to add cell to selected path

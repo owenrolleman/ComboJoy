@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dts1r3066pmd1"]
+
+[ext_resource type="Script" path="res://game/board/Board.gd" id="1_y4kun"]
+[ext_resource type="PackedScene" uid="uid://clkxduqigns3y" path="res://game/board/Tile.tscn" id="2_bbnbj"]
+[ext_resource type="PackedScene" uid="uid://c5de7guhybyyo" path="res://game/board/CellScene.tscn" id="3_4kpcg"]
+
+[node name="Board" type="Node2D"]
+position = Vector2(240, 110)
+script = ExtResource("1_y4kun")
+tile_scene = ExtResource("2_bbnbj")
+cell_scene = ExtResource("3_4kpcg")
+
+[node name="CellContainer" type="Node2D" parent="."]
+metadata/_edit_lock_ = true

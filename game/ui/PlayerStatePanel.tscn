@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c1utypvu485y"]
 
-[ext_resource type="Script" path="res://scripts/PlayerStatePanel.gd" id="1_vqqob"]
+[ext_resource type="Script" path="res://game/ui/PlayerStatePanel.gd" id="1_rytop"]
 
 [node name="PlayerStatePanel" type="Control"]
 layout_mode = 3
@@ -9,7 +9,7 @@ offset_left = 573.0
 offset_top = 4.0
 offset_right = 613.0
 offset_bottom = 44.0
-script = ExtResource("1_vqqob")
+script = ExtResource("1_rytop")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 0

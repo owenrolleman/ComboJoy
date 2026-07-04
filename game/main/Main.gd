@@ -21,8 +21,6 @@ func _ready():
 	selection_manager.board = board
 	selection_manager.player_state_manager = player_state_manager
 	
-	selection_manager.resources_collected.connect(resource_manager.add_resources)
-	selection_manager.output_updated.connect(assignment_manager.add_output)
 	selection_manager.bandwidth_change_requested.connect(player_state_manager.update_bandwidth)
 	selection_manager.execution_requested.connect(execution_manager.execute)
 	
@@ -30,6 +28,7 @@ func _ready():
 	execution_manager.motherboard = motherboard
 	execution_manager.assignment_manager = assignment_manager
 	execution_manager.resource_manager = resource_manager
+	execution_manager.selection_manager = selection_manager
 	
 	# Setup player state manager and panel
 	player_state_panel.player_state_manager = player_state_manager
