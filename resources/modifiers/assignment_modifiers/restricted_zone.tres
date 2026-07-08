@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="RuleModifier" load_steps=2 format=3 uid="uid://doym8xnkpo3lc"]
 
-[ext_resource type="Script" path="res://resources/modifiers/RuleModifier.gd" id="1_37vjk"]
+[ext_resource type="Script" path="res://resources/modifiers/assignment_modifiers/RuleModifier.gd" id="1_37vjk"]
 
 [resource]
 script = ExtResource("1_37vjk")

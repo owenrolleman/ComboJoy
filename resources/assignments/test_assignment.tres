@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="AssignmentData" load_steps=5 format=3 uid="uid://cjujesjk1441o"]
 
 [ext_resource type="Script" path="res://resources/assignments/AssignmentData.gd" id="1_fannb"]
-[ext_resource type="Resource" uid="uid://csr85y05kn4cm" path="res://resources/modifiers/corruption_spread.tres" id="1_fr3n6"]
-[ext_resource type="Resource" uid="uid://doym8xnkpo3lc" path="res://resources/modifiers/restricted_zone.tres" id="2_hed0i"]
-[ext_resource type="Resource" uid="uid://m4ut45sdmvto" path="res://resources/modifiers/shorter_paths.tres" id="3_8c5ba"]
+[ext_resource type="Resource" uid="uid://csr85y05kn4cm" path="res://resources/modifiers/assignment_modifiers/corruption_spread.tres" id="1_fr3n6"]
+[ext_resource type="Resource" uid="uid://doym8xnkpo3lc" path="res://resources/modifiers/assignment_modifiers/restricted_zone.tres" id="2_hed0i"]
+[ext_resource type="Resource" uid="uid://m4ut45sdmvto" path="res://resources/modifiers/assignment_modifiers/shorter_paths.tres" id="3_8c5ba"]
 
 [resource]
 script = ExtResource("1_fannb")

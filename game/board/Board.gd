@@ -21,6 +21,29 @@ enum GravityDirection {
 var gravity_direction := GravityDirection.DOWN
 var grid := []
 
+func _draw():
+	var board_width = WIDTH * TILE_SIZE
+	var board_height = HEIGHT * TILE_SIZE
+	
+	var color = Color(1, 1, 1, 0.08)
+	var offset = Vector2(-TILE_SIZE / 2.0, -TILE_SIZE / 2.0)
+	# Vertical lines
+	for x in range(WIDTH + 1):
+		draw_line(
+			offset + Vector2(x * TILE_SIZE, 0),
+			offset + Vector2(x * TILE_SIZE, board_height),
+			color,
+			1.0
+		)
+	
+	# Horizontal lines
+	for y in range(HEIGHT + 1):
+		draw_line(
+			offset + Vector2(0, y * TILE_SIZE),
+			offset + Vector2(board_width, y * TILE_SIZE),
+			color,
+			1.0
+		)
 # Needs to be improved to allow different shaped board setups
 func create_board():
 	grid.clear()

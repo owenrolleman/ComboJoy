@@ -24,6 +24,12 @@ visible = false
 scale = Vector2(1.2, 1.2)
 texture = ExtResource("2_scshg")
 
+[node name="BackgroundSprite" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0, 0, 0, 0.34902)
+scale = Vector2(1.4, 1.4)
+texture = ExtResource("2_scshg")
+
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

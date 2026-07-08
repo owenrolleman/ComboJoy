@@ -37,7 +37,7 @@ func _on_area_2d_mouse_exited():
 
 # VISUAL CONTROL
 func update_visuals():
-	highlight_sprite.visible = is_valid_target or is_selected
+	highlight_sprite.visible = is_hovered or is_valid_target or is_selected
 	if is_selected:
 		highlight_sprite.scale = targetted_scale
 		highlight_sprite.modulate = selected_color

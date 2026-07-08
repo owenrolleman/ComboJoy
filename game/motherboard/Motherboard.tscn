@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://by8jvd11uohxw"]
+[gd_scene load_steps=3 format=3 uid="uid://by8jvd11uohxw"]
 
 [ext_resource type="Script" path="res://game/motherboard/Motherboard.gd" id="1_p7cxi"]
+[ext_resource type="PackedScene" uid="uid://bn8mmvhqbco0o" path="res://game/motherboard/MotherboardCell.tscn" id="2_koif7"]
 
 [node name="Motherboard" type="Node2D"]
 script = ExtResource("1_p7cxi")
+motherboard_cell_scene = ExtResource("2_koif7")
+
+[node name="CellContainer" type="Node2D" parent="."]

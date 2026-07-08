@@ -16,11 +16,11 @@ func _ready():
 	
 		# Init Board
 	board.create_board()
+	queue_redraw()
 	
 	# Setup selection manager connections
 	selection_manager.board = board
 	selection_manager.player_state_manager = player_state_manager
-	
 	selection_manager.bandwidth_change_requested.connect(player_state_manager.update_bandwidth)
 	selection_manager.execution_requested.connect(execution_manager.execute)
 	
