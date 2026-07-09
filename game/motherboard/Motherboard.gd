@@ -7,6 +7,11 @@ const CELL_SIZE := 64
 var board_size := Vector2i(3, 3)
 
 var grid := []
+
+# TODO: Turn into a scene later
+var input_cell: MotherboardCell
+var input_direction: Direction.Value
+
 @export var motherboard_cell_scene: PackedScene
 
 func get_cell(pos: Vector2i) -> MotherboardCell:
@@ -68,16 +73,72 @@ func get_neighbor(
 	return get_cell(target)
 	
 func process_packets(packets: Array[Packet]) -> ExecutionResult:
+	
+	var queue: Array[PacketTraversal] = []
 	var result = ExecutionResult.new()
-	
-	result.packets = packets
-	
-	var output := 0
+	# Build traversal array
 	for packet in packets:
-		output += packet.output
+		var traversal := PacketTraversal.new()
+		
+		traversal.packet = packet
+		traversal.cell = input_cell
+		traversal.direction = input_direction
+		
+		queue.append(traversal)
 	
-	result.total_output = output
+	# Execution loop
+	while !queue.is_empty():
+		var traversal = queue.pop_front()
+		var result_traversals: Array[PacketTraversal] = process_traversal(traversal, result)
+		queue.append_array(result_traversals)
+		
 	return result
+
+func process_traversal(traversal: PacketTraversal, result: ExecutionResult) -> Array[PacketTraversal]:
+	# Move one cell
+	if !move_traversal(traversal):
+		handle_exit(traversal, result)
+		return []
+	
+	# Empty cell -> Continue moving
+	if !traversal.cell.has_plugin():
+		return [traversal]
+	
+	# Plugin found
+	var plugin = traversal.cell.plugin
+	var traversals = plugin.process_collision(traversal)
+	var surviving: Array[PacketTraversal] = []
+	
+	for t in traversals:
+		
+		eject_from_plugin(t, plugin)
+		
+		if t.cell == null:
+			handle_exit(t, result)
+		else:
+			surviving.append(t)
+	return surviving
+
+func handle_exit(traversal: PacketTraversal, result: ExecutionResult):
+	# TODO:
+	# Determine which motherboard edge the packet exited from
+	# Validate against edge port conditions
+	
+	result.packets.append(traversal.packet)
+	result.total_output += traversal.packet.output
+
+func move_traversal(traversal: PacketTraversal) -> bool:
+	traversal.cell = get_neighbor(traversal.cell, traversal.direction)
+	return traversal.cell != null
+
+func eject_from_plugin(traversal: PacketTraversal, plugin: Plugin):
+	var world_pos = plugin.origin + traversal.output_port.local_position
+	
+	world_pos += Direction.to_vector(traversal.direction)
+	if !is_in_bounds(world_pos):
+		traversal.cell = null
+	else:
+		traversal.cell = get_cell(world_pos)
 
 func can_install_plugin(plugin: Plugin, origin: Vector2i) -> bool:
 	for local_pos in plugin.occupied_cells:

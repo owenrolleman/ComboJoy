@@ -9,7 +9,7 @@ var resource_manager: ResourceManager
 var selection_manager: SelectionManager
 
 func execute(cells: Array[CellNode]):
-	var packets: Array[Packet] = board.create_packets(cells)
+	var packets: Array[Packet] = board.create_packets(cells)	
 	var result: ExecutionResult = motherboard.process_packets(packets)
 	resource_manager.add_resources(result.packets)
 	assignment_manager.add_output(result.total_output)
@@ -17,3 +17,4 @@ func execute(cells: Array[CellNode]):
 	board.apply_gravity_down()
 	board.refill_board()
 	selection_manager.clear_path()
+ 

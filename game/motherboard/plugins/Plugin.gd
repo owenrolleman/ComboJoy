@@ -12,6 +12,15 @@ var origin: Vector2i
 var modifiers: Array[PluginModifier] = []
 var processing_conditions: Array[PacketCondition]
 
+# Main API for traversals entering a plugin. Handles checking of ports
+func process_collision(traversal: PacketTraversal) -> Array[PacketTraversal]:
+	var input_port = find_input_port(traversal)
+	
+	if input_port == null:
+		return []
+	
+	return process(traversal)
+
 # Core procedure for a packet getting processed by a plugin
 # Packet already accepted by plugin at this point
 # Check if process condition is valid for accepted packet
@@ -33,25 +42,8 @@ func process(traversal: PacketTraversal) -> Array[PacketTraversal]:
 
 	return traversals
 
-func should_process(packet: Packet) -> bool:
-
-	for condition in processing_conditions:
-		if !condition.matches(packet):
-			return false
-
-	return true
-
-func apply_before_modifiers(traversal: PacketTraversal):
-
-	for modifier in modifiers:
-		modifier.before_process(self, traversal)
-
-func apply_after_modifiers(traversals: Array[PacketTraversal]):
-
-	for modifier in modifiers:
-		modifier.after_process(self, traversals)
-
 # Takes an array of packettraversal objects and routes them to the correct output ports
+# If no valid output port can be found, packet is lost
 func route_packets(traversals: Array[PacketTraversal]) -> Array[PacketTraversal]:
 
 	var surviving: Array[PacketTraversal] = []
@@ -63,16 +55,53 @@ func route_packets(traversals: Array[PacketTraversal]) -> Array[PacketTraversal]
 		if port == null:
 			continue
 
-		traversal.outgoing_direction = port.direction
+		traversal.direction = port.direction
+		traversal.output_port = port
 		surviving.append(traversal)
 
 	return surviving
+
+func should_process(packet: Packet) -> bool:
+
+	for condition in processing_conditions:
+		if !condition.matches(packet):
+			return false
+
+	return true
+
+
+func apply_before_modifiers(traversal: PacketTraversal):
+
+	for modifier in modifiers:
+		modifier.before_process(self, traversal)
+
+func apply_after_modifiers(traversals: Array[PacketTraversal]):
+
+	for modifier in modifiers:
+		modifier.after_process(self, traversals)
+
+
 
 func process_internal(traversal: PacketTraversal) -> Array[PacketTraversal]:
 	return [traversal]
 
 func packet_can_use_port(traversal: PacketTraversal, port: Port) -> bool:
 	return port.accepts(traversal.packet)
+
+func find_input_port(traversal: PacketTraversal) -> Port:
+	var incoming_side = Direction.opposite(traversal.direction)
+	for port in input_ports:
+		if port.direction != incoming_side:
+			continue
+		
+		if port.local_position != traversal.cell.local_position:
+			continue
+		
+		if !port.accepts(traversal.packet):
+			return null
+		
+		return port
+	return null
 
 func find_output_port(packet: Packet) -> Port:
 	var best: Port = null

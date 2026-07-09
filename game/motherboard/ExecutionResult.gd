@@ -1,5 +1,5 @@
 class_name ExecutionResult
 extends RefCounted
 
-var packets: Array[Packet]
-var total_output: int
+var packets: Array[Packet] = []
+var total_output: int = 0
