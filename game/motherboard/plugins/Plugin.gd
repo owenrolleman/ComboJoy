@@ -117,3 +117,23 @@ func find_output_port(packet: Packet) -> Port:
 		if port.conditions.size() > best.conditions.size():
 			best = port
 	return best
+
+func local_to_world(local_pos: Vector2i) -> Vector2i:
+	return origin + local_pos
+
+func _draw():
+	for port in input_ports:
+		draw_circle(local_to_world(port.local_position), 6, Color.GREEN)
+	
+	for port in output_ports:
+		draw_circle(local_to_world(port.local_position), 6, Color.RED)
+	
+	for cell in occupied_cells:
+
+		draw_rect(
+			Rect2(
+				cell * Motherboard.CELL_SIZE,
+				Vector2.ONE * Motherboard.CELL_SIZE
+			),
+			Color(0.2,0.3,0.5,0.3)
+		)

@@ -32,9 +32,14 @@ func create_motherboard():
 			cell.grid_position = Vector2i(x,y)
 			cell.position = grid_to_world(cell.grid_position)
 			
-			%CellContainer.add_child(cell)
+			$CellContainer.add_child(cell)
 			grid[x].append(cell)
+	init_input_cell(get_cell(Vector2i(0, 0)), Direction.Value.RIGHT)
 # TODO: Abstract into Grid2D class (both this and game board inherit) - several duped funcs
+
+func init_input_cell(cell: MotherboardCell, direction: Direction.Value):
+	input_cell = cell
+	input_direction = direction
 
 func is_in_bounds(pos: Vector2i) -> bool:
 	return pos.x >= 0 \
@@ -52,7 +57,8 @@ func get_neighbor(
 	cell: MotherboardCell,
 	direction: Direction.Value
 ) -> MotherboardCell:
-
+	
+	assert(cell != null, "get_neighbor() called with null cell")
 	var offset := Vector2i.ZERO
 
 	match direction:
@@ -160,5 +166,34 @@ func install_plugin(plugin: Plugin, origin: Vector2i):
 		var cell = get_cell(world_pos)
 		
 		cell.plugin = plugin
+		plugin.position = grid_to_world(origin)
 		cell.local_position = local_pos
 	plugin.origin = origin
+	plugin.position = grid_to_world(origin)
+	
+	%CellContainer.add_child(plugin)
+
+func _draw():
+	var board_width = board_size.x * CELL_SIZE
+	var board_height = board_size.y * CELL_SIZE
+	
+	var color = Color.LIGHT_GRAY
+	# var offset = Vector2(-CELL_SIZE / 2.0, -CELL_SIZE / 2.0)
+	var offset = Vector2.ZERO
+	# Vertical lines
+	for x in range(board_size.x + 1):
+		draw_line(
+			offset + Vector2(x * CELL_SIZE, 0),
+			offset + Vector2(x * CELL_SIZE, board_height),
+			color,
+			1.0
+		)
+	
+	# Horizontal lines
+	for y in range(board_size.y + 1):
+		draw_line(
+			offset + Vector2(0, y * CELL_SIZE),
+			offset + Vector2(board_width, y * CELL_SIZE),
+			color,
+			1.0
+		)

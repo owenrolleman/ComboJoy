@@ -16,6 +16,7 @@ func _ready():
 	
 		# Init Board
 	board.create_board()
+	motherboard.create_motherboard()
 	queue_redraw()
 	
 	# Setup selection manager connections
