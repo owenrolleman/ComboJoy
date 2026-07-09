@@ -1,6 +1,16 @@
 class_name Motherboard
 extends Node2D
 
+signal traversal_moved(
+	traversal: PacketTraversal,
+	from_cell: MotherboardCell,
+	to_cell: MotherboardCell
+	)
+
+signal traversal_spawned(traversal: PacketTraversal)
+signal traversal_destroyed(traversal: PacketTraversal)
+signal traversal_exited(traversal: PacketTraversal)
+
 const MAX_SIZE := Vector2i(10, 10)
 const CELL_SIZE := 64
 
